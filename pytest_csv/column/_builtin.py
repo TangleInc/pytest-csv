@@ -64,9 +64,9 @@ def column_status(item, report):
     elif report.failed:
         yield STATUS, XFAILED if hasattr(report, 'wasxfail') else ERROR if report.when != 'call' else FAILED
         pytest_rerun = item.config.pluginmanager.getplugin('rerunfailures')
-        if pytest_rerun:
+        if pytest_rerun and hasattr(item, 'execution_count'):
             if item.execution_count <= pytest_rerun.get_reruns_count(item):
-                yield STATUS, 'Rerun'
+                yield STATUS, 'rerun'
     elif report.skipped:
         yield STATUS, XFAILED if hasattr(report, 'wasxfail') else SKIPPED
 
