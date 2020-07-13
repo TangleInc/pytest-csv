@@ -72,7 +72,17 @@ def column_status(item, report):
 
 
 def column_success(item, report):
-    yield SUCCESS, str(not bool(report.failed))
+    if report.failed:
+        pytest_rerun = item.config.pluginmanager.getplugin('rerunfailures')
+        if pytest_rerun and hasattr(item, 'execution_count'):
+            if item.execution_count <= pytest_rerun.get_reruns_count(item):
+                yield SUCCESS, RERUN
+            else:
+                yield SUCCESS, False
+        else:
+            yield SUCCESS, False
+    else:
+        yield SUCCESS, True
 
 
 def column_message(item, report):
