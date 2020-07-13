@@ -66,7 +66,7 @@ def column_status(item, report):
         pytest_rerun = item.config.pluginmanager.getplugin('rerunfailures')
         if pytest_rerun and hasattr(item, 'execution_count'):
             if item.execution_count <= pytest_rerun.get_reruns_count(item):
-                yield STATUS, 'rerun'
+                yield STATUS, 'Rerun'
     elif report.skipped:
         yield STATUS, XFAILED if hasattr(report, 'wasxfail') else SKIPPED
 
@@ -76,7 +76,7 @@ def column_success(item, report):
         pytest_rerun = item.config.pluginmanager.getplugin('rerunfailures')
         if pytest_rerun and hasattr(item, 'execution_count'):
             if item.execution_count <= pytest_rerun.get_reruns_count(item):
-                yield SUCCESS, RERUN
+                yield SUCCESS, 'Rerun'
             else:
                 yield SUCCESS, False
         else:
